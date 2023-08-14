@@ -47,7 +47,16 @@ costFunc <- function(r0, rt, rel_cost){
 
 
 generateRt <- function(r0vals, i0, beta, gamma) {
-    rt <- as.numeric(lapply(r0vals, sirModel, i0, beta, gamma, N = 100, times = seq(0., 1000, by = 1)))
+    #param: r0vals, number of individuals who are vaccinated at the onset of the epidemic (array)
+    #param: i0, number of infected people
+    #param: beta: infection rate in 1/time units
+    #param: gamma: recovery rate in 1/time units
+    #returns the number of individuals who recovered (incl. initially vaccinated people)
+
+    times <-  seq(0., 1000, by = 1)
+
+    rt <- as.numeric(lapply(r0vals, sirModel, i0, beta, gamma, N = 100, times = times))
+
     return(rt)
 }
 
