@@ -13,6 +13,9 @@ sirModel <- function(r0, i0, beta, gamma, N, times) {
 
     parameters <- c(beta = beta, gamma = gamma, N = N)
 
+    # S = susceptible
+    # I = infected
+    # R = recovered
     state <- c(S = N - r0 - i0, I = i0, R = r0)
 
     tendency <- function(t, state, parameters) {
@@ -46,16 +49,19 @@ costFunc <- function(r0, rt, rel_cost){
 }
 
 
-generateRt <- function(r0vals, i0, beta, gamma) {
+generateRt <- function(r0vals, i0, beta, gamma, N = 100) {
     #param: r0vals, number of individuals who are vaccinated at the onset of the epidemic (array)
     #param: i0, number of infected people
     #param: beta: infection rate in 1/time units
     #param: gamma: recovery rate in 1/time units
+    #param: N: Polpulation size
     #returns the number of individuals who recovered (incl. initially vaccinated people)
 
+    # take enough time steps to reach steady state
     times <-  seq(0., 1000, by = 1)
 
-    rt <- as.numeric(lapply(r0vals, sirModel, i0, beta, gamma, N = 100, times = times))
+    # use polulation size 100 (N)
+    rt <- as.numeric(lapply(r0vals, sirModel, i0, beta, gamma, N = N, times = times))
 
     return(rt)
 }
